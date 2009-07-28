@@ -1,0 +1,31 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2722
+
+This plugin allows you to define and use variables in stylesheets and make simple calculations with them, like this:
+
+    [pagewidth = 1000]
+    #wrapper { 
+        width: [pagewidth]px;
+        margin: [pagewidth/4]px}
+
+In the target CSS file this will become:
+
+    #wrapper { 
+        width: 1000px;
+        margin: 250px}
+
+You can assign the value of a color to a variable and use it anywhere in the stylesheet. When you change the assignment, the value is updated in the whole stylesheet.
+
+    [textcolor = #09c]
+    h1 {color: [textcolor]}
+
+The variables are surrounded by two delimiters which you can define in the plugin file (or anywhere in the stylesheet). In the examples above square brackets are used but any printable ascii character, not used in the CSS code, will do. 
+
+    ^textcolor = #09c$
+
+It's possible to define the same character as opening and closing delimiter.
+
+    |textcolor = #09c|
+
+HOW IT WORKS
+The plugin uses two CSS files. One source file (in the current buffer) with the CSS code and variables and one target file with pure CSS and calculated variables. This last file is generated when the plugin is invoked and you should link to this file in the (X)HTML.
+

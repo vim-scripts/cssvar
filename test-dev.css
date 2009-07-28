@@ -1,0 +1,104 @@
+/* This is an example and test file for the CSSvar VIM plugin */
+/* call plugin with :call CSSvar() */
+/* this will generate a target CSS file in the same directory as this file 
+   with the name "test.css" */
+
+/* Definitions */ [pagewidth = 1000]  [maincolor = rgb(100%,0%,0%)]  [backgroundcolor = #ffe]  [size = 10]
+ 
+/* Some real world CSS examples */
+body {
+    color: [maincolor];   /* rgb(100%,0%,0%) */
+    background: [backgroundcolor];         /* #ffe */
+    font-size: [size+1]px;          /* 11px */
+    line-height: [size * 150%]px;}       /* 15px */
+
+#wrapper { 
+    width: [pagewidth]px;            /*1000px*/
+    margin: [pagewidth / 3]px;}         /*333.33px*/
+
+/* Arithmetic examples */
+Assignment:
+[margin = 200]   /* Will dissappear in the target CSS file */
+
+Division:
+[margin/3]   /* 66.67 */
+
+Multiplication:
+[margin*2]   /* 400 */
+
+Addition:
+[margin+margin]   /* 400 */
+
+Subtraction:
+[margin-10.5]   /* 189.5 */
+
+Percentage:
+[margin * 25.5%]   /* 51 */
+
+Overriding precedence:
+[((margin+10)*3)/4]   /* 157.5 */
+
+/* Valid variable names consists of letters, digits and characters
+   not used for calculations. Must start with a letter. */
+[foo = 1] [foo]   /* 1 */
+[foo_ = 2] [foo_]   /* 2 */
+[foo3 = 3] [foo3]   /* 3 */
+[foo& = 4] [foo&]   /* 4 */
+
+/* Invalid variable names */
+[_foo = 5] [_foo]
+[foo-bar = 6] [foo-bar]
+[1foo = 7] [1foo]
+
+/* Calculation tests */
+[(1/3)*3]       /* 1 */
+[5/8]    /* 0.63 */
+[1/6]    /* 0.17 */
+[9-10]      /* -1 */
+[0.725]    /* 0.73 */
+
+/* Space doesn't matter */
+[ ( ( margin + 10 )*    3 ) / 4  ]   /* 157.5 */
+
+/* Indirect assignment */
+[test1 = 10]
+[test2 = test1]
+[test2]   /* 10 */
+
+/* Augmented assignment */
+[test2 = test2 + 10]
+[test2]   /* 20 */
+
+/* Definition within a comment [test3 = 30]*/
+[test3]   /* 30 */
+
+/* Changing the delimiters */
+!! op=< cl=>
+[this should not change now]
+<testvar = 12.5>
+<testvar + testvar>   /* 25 */
+
+/* Changing both delimeters to the same character */
+!! op=` cl=`
+`testcolor = #123456`
+testcolor = `testcolor`   /* testcolor = #123456 */
+
+/* Multiple assignments in one line */
+`one = 1``two = 2``three = 3`
+`one``two``three` /* 123 */
+
+/* Changing the errorstring */
+`olderror`   /* ??????olderror */
+!! er=++
+`newerror`   /* ++++newerror */
+
+/* Changing the command string prefix (for what it's worth) */
+!! cm=@@
+[olderror]   /* ++++olderror */
+@@ er=//
+[newerror]   /* ////newerror */
+
+/* Don't touch my unicode */
+© é • ¶ ˚ ™
+
+
